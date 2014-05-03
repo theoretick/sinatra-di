@@ -1,0 +1,53 @@
+
+%link{:rel => "stylesheet", :href => "/css/application.css"}
+
+  %body
+    .navbar.navbar-fluid-top
+      .navbar-inner
+        .container-fluid
+          %a{:href => "/", :class => "brand"}
+            Discuss It
+          %ul.nav
+            %li
+              %a{:href => "/about"}
+                About
+          %ul.nav.pull-right.signin-navbar
+            %li#devlink
+              %a{:href => "/api"}
+                developers
+    .container-fluid
+      %br
+      .row-fluid
+        .span9.offset1
+
+          / CONTENT!
+
+          .hero-unit
+            %h1 Discuss It!
+            %p Online discussion tracker for finding conversations
+
+            .row-fluid
+              %form{ :action => "/submit", :method => "get"}
+                .field
+                  %label{:id => "search-field"}
+                    Paste your link:
+                  %input{:type=>"text", :required => true, :placeholder => "http://example.com/article.html", :autofocus => true, :id => "search-field"}
+                  %input{:type=>"submit", :class => "btn btn-primary", :value => "Discuss This!"}
+
+            .row-fluid
+              %h6 Suggested Searches
+              %p.suggested
+                %a{:href => "/submit?url=http://singularityhub.com/2013/07/27/canvas-camera-brush-and-algorithms-enable-robot-artists-beautiful-paintings/"}
+                  "Robot Produces Paintings With That 'Imperfect' Human Look - singularityhub.com"
+              %p.suggested
+                %a{:href => "/submit?url=http://www.theguardian.com/world/2013/sep/05/nsa-gchq-encryption-codes-security"}
+                  "Revealed: how US and UK spy agencies defeat internet privacy and security - theguardian.com"
+              %p.suggested
+                %a{:href => "/submit?url=http://i.imgur.com/gOLvZVO.jpg"}
+                  "Photo of all-black house in Germany - imgur.com"
+
+        %footer.span3
+          %p{:style => "color: eeeeee"}
+            Discuss It 2013 -
+            = " v" + DiscussIt::VERSION
+          %br/
