@@ -21,6 +21,13 @@ module DiscussIt
       haml :submit, locals: {query_url:  @query_url}
     end
 
+    get '/about' do
+      haml :about
+    end
+
+    get '/api' do
+      haml :developers
+    end
     get '/api/get_discussions?:url?' do
       content_type :json
 
