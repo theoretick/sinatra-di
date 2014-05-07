@@ -100,6 +100,8 @@ module DiscussIt
       return @listings.tops
     end
 
+    private
+
     # fetch listings from all available sources.
     def get_all
       [get_reddit, get_hn, get_slashdot].reduce([]) do |all_results, src_result|

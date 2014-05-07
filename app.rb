@@ -16,8 +16,10 @@ module DiscussIt
       haml :index
     end
 
-    get '/submit?:url?' do
-      @query_url = params[:url]
+    get '/submit' do
+      # remove params from base url
+      @query_url = params[:url].split("?").first
+
       haml :submit, locals: {query_url:  @query_url}
     end
 

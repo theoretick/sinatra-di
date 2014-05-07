@@ -27,11 +27,11 @@
             %p Online discussion tracker for finding conversations
 
             .row-fluid
-              %form{ :action => "/submit", :method => "get"}
+              %form{ :action => "/submit", :method => "GET"}
                 .field
-                  %label{:id => "search-field"}
+                  %label{:id => "search-field", :for => "url"}
                     Paste your link:
-                  %input{:type=>"text", :required => true, :placeholder => "http://example.com/article.html", :autofocus => true, :id => "search-field"}
+                  %input{:type=>"text", :required => true, :placeholder => "http://example.com/article.html", :autofocus => true, :id => "search-field", :name => "url"}
                   %input{:type=>"submit", :class => "btn btn-primary", :value => "Discuss This!"}
 
             .row-fluid
