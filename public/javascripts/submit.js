@@ -7,12 +7,12 @@ $(document).ready(function(){
   var apiUrl = "/api/get_discussions" + window.location.search;
   var searchParam = window.location.search;
   var $topDiscussionsTable = $('#top-discussions-table tbody');
-  var $allDiscussionsTable = $('#all-discussions-table tbody');
+  var $otherDiscussionsTable = $('#other-discussions-table tbody');
   var $filteredDiscussionsTable = $('#filtered-discussions-table tbody');
 
   // init loading spinners
   $topDiscussionsTable.spin('small');
-  $allDiscussionsTable.spin('small');
+  $otherDiscussionsTable.spin('small');
 
   // hide filtered results unless they exist
   $('#filtered-btn').hide();
@@ -51,7 +51,7 @@ $(document).ready(function(){
     if (resultSet == 'top'){
       $noResultP.html('Sorry, no discussions found. <a href="/">Try Again?</a>');
     }
-    else if (resultSet == 'all'){
+    else if (resultSet == 'other'){
       $noResultP.html('No additional results found.');
     }
     return $noResultP;
@@ -75,8 +75,8 @@ $(document).ready(function(){
       .node('!.top_results', function(){
         $topDiscussionsTable.spin(false);
       })
-      .node('!.all_results', function(){
-        $allDiscussionsTable.spin(false);
+      .node('!.other_results', function(){
+        $otherDiscussionsTable.spin(false);
       })
 
       // for each result that comes in, add as row
@@ -84,9 +84,9 @@ $(document).ready(function(){
         var row = addRow(result);
         $topDiscussionsTable.append(row);
       })
-      .node('!.all_results.results*', function( result ){
+      .node('!.other_results.results*', function( result ){
         var row = addRow(result);
-        $allDiscussionsTable.append(row);
+        $otherDiscussionsTable.append(row);
       })
 
       // display if has filtered results
@@ -112,13 +112,13 @@ $(document).ready(function(){
         }
         if (allResults.total_hits === 0) {
           $('#top-results').append(showNoResults('top'));
-          $('#all-discussions').hide();
+          $('#other-discussions').hide();
         }
       })
 
       .fail(function() {
         $topDiscussionsTable.spin(false);
-        $allDiscussionsTable.spin(false);
+        $otherDiscussionsTable.spin(false);
         // $('#top-results').append(showServerError());
         // $('#all-results').append(showServerError());
       });

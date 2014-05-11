@@ -46,6 +46,7 @@ module DiscussIt
 
       @top_results, filtered_top_results = DiscussIt::Filter.filter_threads(top_raw)
       @all_results, filtered_all_results = DiscussIt::Filter.filter_threads(all_raw)
+      @other_results = @all_results - @top_results
       @filtered_results = (filtered_all_results + filtered_top_results).uniq
 
       result_response.to_json
@@ -67,7 +68,7 @@ module DiscussIt
       [
         total_hits_node,
         results_node(:top_results, @top_results),
-        results_node(:all_results, @all_results),
+        results_node(:other_results, @other_results),
         results_node(:filtered_results, @filtered_results),
         errors_node
       ].inject(&:merge)
@@ -92,7 +93,7 @@ module DiscussIt
     end
 
     def total_hits_count
-      hit_count_of(@top_results) + hit_count_of(@all_results)
+      hit_count_of(@top_results) + hit_count_of(@other_results)
     end
 
     def hit_count_of(results)
