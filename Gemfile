@@ -6,7 +6,6 @@ ruby '2.0.0'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'rack-contrib'
-# gem 'rake'
 gem 'thin'
 gem 'json'
 
@@ -23,3 +22,5 @@ gem 'hashie'
 # # caching
 # gem 'memcachier'
 # gem 'dalli'
+
+gem 'redis'

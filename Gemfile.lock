@@ -30,6 +30,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    redis (3.0.4)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -60,6 +61,7 @@ DEPENDENCIES
   json
   pry
   rack-contrib
+  redis
   sinatra
   sinatra-contrib
   thin
