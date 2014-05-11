@@ -1,4 +1,4 @@
 sinatra-di
 ==========
 
-deprecated. see http://github.com/theoretick/discussit
+deprecated. see https://github.com/theoretick/discuss-it
