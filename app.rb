@@ -33,11 +33,12 @@ module DiscussIt
       content_type :json
 
       @query_url = params[:url]
+      source = set_source
 
       # ALWAYS remove trailing slash before get_response calls
       @query_url.chop! if has_trailing_slash?
 
-      discuss_it = DiscussIt::DiscussItApi.cached_request(@query_url, source: 'all')
+      discuss_it = DiscussIt::DiscussItApi.cached_request(@query_url, source: source)
 
       top_raw ||= discuss_it.find_top
       all_raw ||= discuss_it.find_all.all
@@ -60,6 +61,10 @@ module DiscussIt
 
     def has_trailing_slash?
       @query_url.end_with?('/')
+    end
+
+    def set_source
+      params[:source] || ['all']
     end
 
     # build response hash one node at a time

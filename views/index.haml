@@ -36,7 +36,14 @@
                   %label{:for => "strip_params", :class => "muted", :alt_text => "Remove extraneous parameters, may yield better results"}
                     Strip url params?
                     %input{:type=>"checkbox", :id => "strip_params", :value => "true", :name => "strip_params", :checked => 'checked'}
-
+                  %label{:for => "source[]", :class => "muted", :alt_text => "Sources to query for discussions"}
+                    Source:
+                    %input{:type=>"checkbox", :value => "reddit", :name => "source[]", :checked => "checked"}
+                      Reddit
+                    %input{:type=>"checkbox", :value => "hn", :name => "source[]", :checked => "checked"}
+                      HackerNews
+                    %input{:type=>"checkbox", :value => "slashdot", :name => "source[]", :checked => "checked"}
+                      Slashdot
             .row-fluid
               %h6 Suggested Searches
               %p.suggested

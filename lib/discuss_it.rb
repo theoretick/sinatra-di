@@ -48,21 +48,24 @@ module DiscussIt
     #
     # Returns nothing.
     def initialize(query_string, opts={})
-      opts[:source]      ||= 'all'
+      opts[:source]      ||= ['all']
       opts[:api_version] ||= 3
 
       @query_string = query_string
       @errors = []
+      results = []
 
-      results = case opts[:source]
-                when 'reddit'
-                  get_reddit.listings
-                when 'hackernews', 'hn'
-                  get_hn.listings
-                when 'slashdot'
-                  get_slashdot.listings
-                when 'all'
-                  get_all
+      results = opts[:source].reduce([]) do |arr, src|
+                  arr +=  case src
+                          when 'reddit'
+                            get_reddit.listings
+                          when 'hackernews', 'hn'
+                            get_hn.listings
+                          when 'slashdot'
+                            get_slashdot.listings
+                          when 'all'
+                            get_all
+                          end
                 end
 
       @listings = ListingCollection.new(results)

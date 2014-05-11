@@ -11,8 +11,8 @@ module DiscussIt
     def self.cached_request(query_url, opts={})
       redis = Redis.new
 
-      opts[:source]      ||= 'all'
-      request_cache_key = "#{query_url}_#{opts[:source]}"
+      opts[:source]      ||= ['all']
+      request_cache_key = "#{query_url}_#{opts[:source].join("_")}"
 
       if redis[request_cache_key]
         puts ('*'*80), "[caching] [redis.get] #{request_cache_key}"
