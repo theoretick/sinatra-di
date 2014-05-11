@@ -114,6 +114,9 @@ $(document).ready(function(){
           $('#top-results').append(showNoResults('top'));
           $('#other-discussions').hide();
         }
+        else if (allResults.other_results.hits === 0) {
+          $('#other-discussions').hide();
+        }
       })
 
       .fail(function() {
