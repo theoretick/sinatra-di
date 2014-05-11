@@ -29,10 +29,13 @@
             .row-fluid
               %form{ :action => "/submit", :method => "GET"}
                 .field
-                  %label{:id => "search-field", :for => "url"}
+                  %label{:for => "url"}
                     Paste your link:
                   %input{:type=>"text", :required => true, :placeholder => "http://example.com/article.html", :autofocus => true, :id => "search-field", :name => "url"}
                   %input{:type=>"submit", :class => "btn btn-primary", :value => "Discuss This!"}
+                  %label{:for => "strip_params", :class => "muted", :alt_text => "Remove extraneous parameters, may yield better results"}
+                    Strip url params?
+                    %input{:type=>"checkbox", :id => "strip_params", :value => "true", :name => "strip_params", :checked => 'checked'}
 
             .row-fluid
               %h6 Suggested Searches
@@ -47,7 +50,7 @@
                   "Photo of all-black house in Germany - imgur.com"
 
         %footer.span3
-          %p{:style => "color: eeeeee"}
-            Discuss It 2013 -
+          %p
+            Discuss It 2014 -
             = " v" + DiscussIt::VERSION
           %br/

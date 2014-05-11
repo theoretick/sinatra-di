@@ -17,9 +17,7 @@ module DiscussIt
     end
 
     get '/submit' do
-      # remove params from base url
-      @query_url = params[:url].split("?").first
-
+      @query_url = strip_params? ? params[:url].split("?").first : params[:url]
       haml :submit, locals: {query_url:  @query_url}
     end
 
@@ -30,6 +28,7 @@ module DiscussIt
     get '/api' do
       haml :developers
     end
+
     get '/api/get_discussions?:url?' do
       content_type :json
 
@@ -37,10 +36,8 @@ module DiscussIt
       results = {}
 
       # ALWAYS remove trailing slash before get_response calls
-      @query_url.chop! if @query_url.end_with?('/')
+      @query_url.chop! if has_trailing_slash?
 
-      # caching discussit API calls
-      # TODO: breakup this caching for individual calls.
       discuss_it = DiscussIt::DiscussItApi.new(@query_url, source: 'all')
 
       top_raw ||= discuss_it.find_top
@@ -49,49 +46,58 @@ module DiscussIt
 
       @top_results, filtered_top_results = DiscussIt::Filter.filter_threads(top_raw)
       @all_results, filtered_all_results = DiscussIt::Filter.filter_threads(all_raw)
-
       @filtered_results = (filtered_all_results + filtered_top_results).uniq
 
-      results = {
-           total_hits: total_hits_count,
-          top_results: {
-                   hits: top_hits_count,
-                results: @top_results
-            },
-          all_results: {
-                   hits: all_hits_count,
-                results: @all_results
-          },
-          filtered_results: {
-                   hits: filtered_hits_count,
-                results: @filtered_results
-          },
-          errors: @errors
-        }
-
-      results.to_json
+      result_response.to_json
     end
 
     private
 
+    # remove params from base url if requested (default: true)
+    def strip_params?
+      params[:strip_params] == 'true'
+    end
+
+    def has_trailing_slash?
+      @query_url.end_with?('/')
+    end
+
+    # build response hash one node at a time
+    def result_response
+      [
+        total_hits_node,
+        results_node(:top_results, @top_results),
+        results_node(:all_results, @all_results),
+        results_node(:filtered_results, @filtered_results),
+        errors_node
+      ].inject(&:merge)
+    end
+
     # returns the total number of hits for top + all results
+    def total_hits_node
+      {total_hits: total_hits_count}
+    end
+
+    def results_node(key, results)
+      {
+        key => {
+          hits: hit_count_of(results),
+          results: results
+        }
+      }
+    end
+
+    def errors_node
+      {errors: @errors}
+    end
+
     def total_hits_count
-      return top_hits_count + all_hits_count
+      hit_count_of(@top_results) + hit_count_of(@all_results)
     end
 
-    # returns the total number of hits for top results
-    def top_hits_count
-      return @top_results.length || 0
+    def hit_count_of(results)
+      results.length || 0
     end
 
-    # returns the total number of hits for all results
-    def all_hits_count
-      return @all_results.length || 0
-    end
-
-    # returns the total number of hits for filtered results
-    def filtered_hits_count
-      return @filtered_results.length || 0
-    end
   end
 end
